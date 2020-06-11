@@ -64,7 +64,6 @@ a {
 .section h1 {
     text-align: center;
     font-size: 32px;
-    padding-bottom: 1em;
 }
 .section h2 {
     text-align: center;
@@ -114,10 +113,89 @@ a {
     margin-bottom: 25px;
     width: 300px;
 }
-
 .row_paper .bibtex-entries > pre {
     font-style: normal;
     line-height: 1.2em;
     text-align: left;
     display: none;
+}
+.section-title {
+    font-size: 18pt;
+    font-family: "Roboto", sans-serif;
+    color: #313436;
+    padding-bottom: 0.3em;
+    margin-bottom: 0.8em;
+    text-align: center;
+}
+.section-title:after {
+    content: " ";
+    display: block;
+    height: 2px;
+    margin-top: 4px;
+    background: #222;
+    background: linear-gradient(90deg, white 0%, #333 50%, white 100%);
+}
+h1.project-title {
+    font-weight: normal;
+    line-height: 120%;
+}
+.authors { text-align: center; }
+.authors a {
+    display: inline-block;
+    font-size: 20px;
+    padding: 15px;
+}
+.authors sup {
+    color: #313436;
+    font-size: 60%;
+}
+.affiliations {
+    font-size: 15px;
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+.project-conference {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.project-icons {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.project-icons a {
+    display: inline-block;
+    font-weight: bold;
+    padding: 0px 20px 0px 20px;
+}
+.project-icons i { font-size: 30px; }
+.teaser-image { margin-bottom: 30px;}
+.teaser-image img {
+    width: 60%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.teaser-image span {
+    text-align: center;
+    font-style: italic;
+    font-size: 14px;
+    color: #000;
+}
+.abstract {
+    font-size: 16px
+}
+.video {
+    text-align: center;
+    margin-bottom: 20px
+}
+
+img {
+    width: 60%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
 }
