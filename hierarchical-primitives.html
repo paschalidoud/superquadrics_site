@@ -1,0 +1,251 @@
+<!Doctype html>
+<html lang="en">
+    <head>
+        <title>hierarchical_primitives</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="author" content="Despoina Paschalidou">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/png" href="data/bunny.png"/>
+
+        <link rel="stylesheet" type="text/css" href="style.css?cache=7733391418498779679">
+        <link href="https://fonts.googleapis.com/css?family=Arvo|Roboto&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </head>
+    <body>
+        <div class="section">
+            <h1 class="project-title">
+                Learning Unsupervised Hierarchical Part Decomposition <br />
+                of 3D Objects from a Single RGB Image
+            </h1>
+            <div class="authors">
+                <a href=https://paschalidoud.github.io/>
+                    Despoina Paschalidou <sup>1,3,5</sup>
+                </a>
+                <a href=https://ee.ethz.ch/the-department/faculty/professors/person-detail.OTAyMzM=.TGlzdC80MTEsMTA1ODA0MjU5.html>
+                    Luc van Gool <sup>3,4,5</sup>
+                </a>
+                <a href=http://cvlibs.net/>
+                    Andreas Geiger <sup>1,2,5</sup>
+                </a>
+            </div>
+
+            <div class="affiliations">
+                <span><sup>1</sup> Autonomous Vision Group, MPI for
+                    Intelligent Systems Tübingen</span>
+                <span><sup>2</sup> University of Tübingen</span> <br/>
+                <span><sup>3</sup> Computer Vision Lab, ETH Zürich</span>
+                <span><sup>4</sup> KU Leuven</span> <br/>
+                <span><sup>5</sup> Max Planck ETH Center for Learning Systems</span>
+            </div>
+
+            <div class="project-conference">
+                CVPR 2020
+            </div>
+
+            <div class="project-icons">
+                <a href="https://arxiv.org/pdf/2004.01176.pdf">
+                    <i class="fa fa-file"></i> <br/>
+                    Paper
+                </a>
+                <a href="https://github.com/paschalidoud/hierarchical_primitives">
+                    <i class="fa fa-github"></i> <br/>
+                    Code
+                </a>
+                <a href="https://www.youtube.com/watch?v=QgD0NHbWVlU&vq=hd1080&autoplay=1">
+                    <i class="fa fa-youtube-play"></i> <br/>
+                    Video
+                </a>
+                <a href="https://paschalidoud.github.io/data/Paschalidou2020CVPR_poster.pdf">
+                    <i class="fa fa-picture-o"></i> <br/>
+                    Poster
+                </a>
+                <a href="http://www.cvlibs.net/publications/Paschalidou2020CVPR_slides.pdf">
+                    <i class="fa fa-file-powerpoint-o"></i> <br/>
+                    Slides
+                </a>
+                <a href="https://autonomousvision.github.io/hierarchical-primitives/">
+                    <i class="fa fa-newspaper-o"></i> <br/>
+                    Blog
+                </a>
+            </div>
+
+            <div class="teaser-image">
+                <img src="data/hierarchical_primitives/teaser.png" style="width:90%;">
+                <span>
+                    We consider the problem of learning structure-aware
+                    representations that go beyond part-level geometry and focus on part-level
+                    relationships. Here, we show our reconstruction as an unbalanced binary tree of
+                    primitives, given a single RGB image as input. Note that our model does not
+                    require any supervision on object parts or the hierarchical structure of the 3D
+                    object. We show that our representation is able to model different parts of an
+                    object with different levels of abstraction, leading to improved reconstruction
+                    quality.
+                </span>
+            </div>
+            <div class="abstract">
+                Humans perceive the 3D world as a set of distinct objects that
+                are characterized by various low-level (geometry, reflectance) and high-level
+                (connectivity, adjacency, symmetry) properties. Recent methods based on
+                convolutional neural networks (CNNs) demonstrated impressive progress in 3D
+                reconstruction, even when using a single 2D image as input. However, the
+                majority of these methods focuses on recovering the local 3D geometry of an
+                object without considering its part-based decomposition or relations between
+                parts. We address this challenging problem by proposing a novel formulation
+                that allows to jointly recover the geometry of a 3D object as a set of
+                primitives as well as their latent hierarchical structure without part-level
+                supervision. Our model recovers the higher level structural decomposition of
+                various objects in the form of a binary tree of primitives, where simple parts
+                are represented with fewer primitives and more complex parts are modeled with
+                more components. Our experiments on the ShapeNet and D-FAUST datasets
+                demonstrate that considering the organization of parts indeed facilitates
+                reasoning about 3D geometry.
+            </div>
+
+            <div class="section-title">Approach Overview</div>
+            <div class="video">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/QgD0NHbWVlU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                 </iframe>
+            </div>
+
+            <div class="content">
+                Our structure-aware representation is based on the simple
+                assumption that complex object parts should be modelled with more primitives,
+                whereas geometrically simpler parts with fewer components. In contrast to
+                existing primitive-based techniques that represent 3D objects as an
+                unstructured collection of parts, we employ a neural network that learns to
+                recursively decompose an object into its constituent parts by building a latent
+                space that encodes both the part-level hierarchy and the part geometries. The
+                hierarchical decomposition is represented as an unbalanced binary tree of
+                primitives of depth \(D\).
+            </div>
+            <img src="data/hierarchical_primitives/our_representation_1.png" style="width:80%">
+            <div class="content">
+                At every depth level, each of the \(2^d \mid d=0,\dots,
+                D\) nodes is recursively split into two nodes (its children) until reaching the
+                maximum depth. This results in a representation with various levels of detail.
+                Naturally, reconstructions from deeper depth levels are more detailed. Note
+                that the reconstructions below are derived from the same model, trained with a
+                maximum number of \(2^4=16\) primitives. During inference, the
+                network dynamically combines representations from different depth levels to
+                recover the final prediction.
+            </div>
+            <img src="data/hierarchical_primitives/our_representation_2.png" style="width:80%">
+            
+            <div class="content">
+            <p>More importantly, the hierarchical part-based decomposition is
+            learned without any supervision neither on the object parts nor their
+            structure. Instead, our model jointly infers these latent variables during
+            training.
+            </p>
+            
+            Given an input (e.g. image, voxel grid), our goal is to learn a
+            neural network \(\phi_{\theta}\) which maps the input to a set of primitives
+            that best describe the target object. We represent the target
+            object as a set of points \(\mathcal{X}=\{(\mathbf{x}_i, o_i)\}_{i=1}^N\)
+            where \(mathbf{x}_i\) corresponds to the location of the \(i\)-th point and \(o_i\)
+            denotes its label, namely whether this point lies inside or outside
+            the target object. During training, our network learns to predict a hierarchical
+            decomposition over parts in the form of a  binary tree of  primitives of depth \(D\)
+            as
+
+            $$\mathcal{P}=\{\{p_k^d\}_{k=0}^{2^d-1} \,\mid \, d=\{0 \dots D\}\}.$$
+
+            Our network comprises three main components:
+            <ul>
+                <li>the <strong>partition network</strong> that recursively splits the shape
+                    representation into representations of parts </li>
+                <li>the <strong>structure network</strong> that focuses on learning the
+                    hierarchical arrangement of primitives, namely assigning parts of the object to
+                    the primitives at each depth level and </li>
+                <li>the <strong>geometry network</strong> that recovers the primitive parameters </li>
+            </ul>
+            </div>
+
+            <img src="data/hierarchical_primitives/network.svg" style="width:90%">
+            
+            <div class="content">
+                Given an input (e.g. image, voxel grid), our network predicts a binary
+                tree of primitives \(\mathcal{P}\) of maximum depth \(D\). The 
+                <strong>feature encoder</strong> maps the input into a feature vector
+                \(\mathbf{c}_0^0\). Subsequently, the <strong>partition network</strong>
+                splits each feature representation \(\mathbf{c}_k^d\) in two
+                \(\{\mathbf{c}_{2k}^{d+1}, \mathbf{c}_{2k+1}^{d+1}\}\),
+                resulting in feature representations for \(\{1,2,4,\dots, 2^d\}\) primitives
+                where \(\mathbf{c}_k^d\) denotes the feature
+                representation for the \(k\)-th primitive at depth \(d\).
+                Each \(\mathbf{c}_k^d\) is passed to the <strong>structure network</strong>
+                that "assigns" a part of the object to a specific primitive
+                \(p_k^d\). As a result, each \(p_k^d\) is responsible for
+                representing a specific part of the target shape, denoted as the set of points
+                \(\mathcal{X}_k^d\). Finally, the <strong>geometry network</strong> predicts
+                the primitive parameters \(\lambda_k^d\) and the reconstruction quality \(q_k^d\)
+                for each primitive. We use plate notation to denote repetition
+                over all nodes \(k\) at each depth level \(d\). The final reconstruction is
+                shown on the right. Our optimization objective is a weighted sum over four terms:
+                <ul>
+                    <li> the <strong>structure loss </strong> that enforces the hierarchical tree decomposition</li>
+                    <li> the <strong>reconstruction loss </strong> that measures how well the predicted shape matches the target shape. </li>
+                    <li> the <strong>compatibility loss </strong> that measures how good each primitive fits the object part it represents</li>
+                    <li> the <strong>proximity loss</strong> that acts as a regularizer to counteract the vanishing gradients problem</li>
+                </ul>
+            </div>
+
+            <div class="section-title">Evaluation on ShapeNet</div>
+                <div class="content">
+                    We evaluate our model on the single-view 3D reconstruction
+                    task and compare against various state-of-the-art methods. We follow the
+                    standard experimental setup and train a single model for the 13 ShapeNet
+                    objects.
+                </div>
+
+                <img src="data/hierarchical_primitives/shapenet_qualitative.png" style="width:80%">
+                <div class="content">
+                    Our model yields geometrically accurate reconstructions
+                    that outperform existing primitive-based methods, while performing
+                    competitively with more flexible implicit share representations, such as
+                    <a href="http://www.cvlibs.net/publications/Mescheder2019CVPR.pdf"> Occupancy Networks</a>.
+                </div>
+                <img src="data/hierarchical_primitives/shapenet_quantitative.png" style="width:80%">
+                
+                <div class="content">
+                    Below we visualize the predicted tree of primitives on
+                    various ShapeNet objects. We observe that our model recovers unbalanced binary
+                    trees of primitives that decompose a 3D object into a set of parts. We
+                    associate every primitive with a unique color, thus primitives illustrated with
+                    the same color correspond to the same object part. Note how our model uses
+                    fewer primitives for representing simpler parts (e.g. screen of the monitor)
+                    and more primitives for more complex parts (e.g. wings of the plane).
+                </div>
+                <img src="data/hierarchical_primitives/shapenet.gif" style="width:80%">
+
+            <div class="section-title">Evaluation on Dynamic FAUST</div>
+                <div class="content">
+                    We also evaluate our model on the Dynamic FAUST dataset,
+                    which consists of various humans under different poses. We observe that while
+                    our baseline yields more parsimonious abstractions, their level of detail is
+                    limited. On the contrary, our model captures the geometry of the human body
+                    with more detail.
+                </div>
+                <img src="data/hierarchical_primitives/dfaust_qualitative.png" style="width:80%">
+                
+                <div class="content">
+                    We further observe that our learned hierarchies have a
+                    semantic interpretation, as the same node is consistently used for representing
+                    the same object part. For example, the node (4, 3) is consistently used for
+                    representing the right leg of different humans under various poses (illustrated
+                    with blue), while node (4, 12) is used for representing the head of different
+                    humans (illustrated with light green).
+                </div>
+                <img src="data/hierarchical_primitives/semantic_interpretation_video.gif" style="width:80%">
+
+            <div class="section-title">Acknowledgements</div>
+            <div class="content">
+                This research was supported by the Max Planck ETH Center for
+                Learning Systems and a HUAWEI research gift.
+            </div>
+        </div>
+    </body>
